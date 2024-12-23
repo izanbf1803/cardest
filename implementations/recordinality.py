@@ -39,7 +39,9 @@ class MinSet:
 
 
 class Recordinality:
-    def __init__(self, hash_f: Callable[[str], int], k: int):
+    def __init__(self, salt: str, hash_f: Callable[[str], int], k: int):
+        self.salt = salt
+
         self.hash_f = hash_f
 
         self.k = k
@@ -50,7 +52,7 @@ class Recordinality:
 
 
     def add(self, elem: str):
-        h = self.hash_f(elem)
+        h = self.hash_f(self.salt + elem)
         if len(self.S) < self.k:
             self.S.add(h)
             self.R = len(self.S)
@@ -67,4 +69,5 @@ class Recordinality:
             Z = self.k * (1 + 1/self.k)**(self.R - self.k + 1) - 1
             return Z
         else:
-            return None
+            return len(self.S)
+

@@ -23,7 +23,9 @@ class AveragedCardinalityEstimator:
         return 1 + AveragedCardinalityEstimator.ilog2(x)
 
 
-    def __init__(self, hash_f: Callable[[str], int], hash_size: int, m: int):
+    def __init__(self, salt: str, hash_f: Callable[[str], int], hash_size: int, m: int):
+        self.salt = salt
+        
         # m is the number of substreams used to average the estimation
         self.m = m
         self.log2m = self.ilog2(m)
@@ -44,7 +46,7 @@ class AveragedCardinalityEstimator:
 
 
     def add(self, elem: str):
-        hash = self.hash_f(elem)
+        hash = self.hash_f(self.salt + elem)
 
         # (hash & self.mask) == hash % self.m
         leftmost_log2m_bits = hash >> self.mask_len

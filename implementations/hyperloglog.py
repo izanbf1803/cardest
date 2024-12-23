@@ -5,8 +5,8 @@ from math import log
 
 
 class HyperLogLog(AveragedCardinalityEstimator):
-    def __init__(self, hash_f: Callable[[str], int], hash_size: int, m: int):
-        super().__init__(hash_f, hash_size, m)
+    def __init__(self, salt: str, hash_f: Callable[[str], int], hash_size: int, m: int):
+        super().__init__(salt, hash_f, hash_size, m)
 
         self.substream = [self.mask for _ in range(m)]
         
